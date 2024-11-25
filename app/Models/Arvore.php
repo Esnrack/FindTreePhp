@@ -14,7 +14,7 @@ class Arvore extends Model
     protected $fillable = [
         'nome_arvore',
         'descricao_botanica',
-        'biologia_repordutiva',
+        'biologia_reprodutiva',
         'frutificacao',
         'dispersao',
         'ocorrencia_natural',

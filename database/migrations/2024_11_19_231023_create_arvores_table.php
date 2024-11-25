@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('nome_arvore', 250)->unique();
             $table->text('descricao_botanica');
-            $table->text('biologia_repordutiva');
+            $table->text('biologia_reprodutiva');
             $table->text('frutificacao');
             $table->text('dispersao');
             $table->text('ocorrencia_natural');

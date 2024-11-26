@@ -2,7 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
 
-defineProps({
+const props = defineProps({
     arvores: {
         type: Array,
     },
@@ -42,3 +42,9 @@ const renderCampaign = (campaign) => {
         </div>
     </AuthenticatedLayout>
 </template>
+
+<style>
+    .uploading-image{
+        display:flex;
+   }
+</style>

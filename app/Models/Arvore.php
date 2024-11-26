@@ -38,4 +38,9 @@ class Arvore extends Model
         'agua',
         'solos'
     ];
+
+    public function imagens()
+    {
+        return $this->hasMany(ImagensArvore::class, 'arvore_id', 'id');
+    }
 }

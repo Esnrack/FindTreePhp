@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Arvore;
+use App\Models\ImagensArvore;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +22,7 @@ class ArvoreController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Arvore/Register');
     }
 
     /**
@@ -30,21 +32,43 @@ class ArvoreController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        $arvore = Arvore::create([
+            'nome_arvore' => $request->nome_arvore,
+            'descricao_botanica' => $request->descricao_botanica,
+            'biologia_reprodutiva' => $request->biologia_reprodutiva,
+            'frutificacao' => $request->frutificacao,
+            'dispersao' => $request->dispersao,
+            'ocorrencia_natural' => $request->ocorrencia_natural,
+            'mapa' => $request->mapa,
+            'aspectos_ecologicos' => $request->aspectos_ecologicos,
+            'regeneracao_natural' => $request->regeneracao_natural,
+            'aproveitamento' => $request->aproveitamento,
+            'alimentacao' => $request->alimentacao,
+            'dados_nutricionais' => $request->dados_nutricionais,
+            'formas_consumo' => $request->formas_consumo,
+            'biotec_energ' => $request->biotec_energ,
+            'composicao' => $request->composicao,
+            'poten_bioprodutos' => $request->poten_bioprodutos,
+            'bioatividade' => $request->bioatividade,
+            'paisagismo' => $request->paisagismo,
+            'cultivo_viveiro' => $request->cultivo_viveiro,
+            'colheita_benef_semente' => $request->colheita_benef_semente,
+            'producao_mudas' => $request->producao_mudas,
+            'transplante' => $request->transplante,
+            'cuidados_especiais' => $request->cuidados_especiais,
+            'agua' => $request->agua,
+            'solos' => $request->solos
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user);
+        if ($request->has('imagens') && is_array($request->imagens)) {
+            foreach ($request->imagens as $imagemData) {
+                ImagensArvore::create([
+                    'arvore_id' => $arvore->id,
+                    'imagem' => $imagemData['imagem'],
+                    'descricao' => $imagemData['descricao'] ?? $arvore->nome_arvore
+                ]);
+            }
+        }
 
         return redirect(route('arvores.list', absolute: false));
     }

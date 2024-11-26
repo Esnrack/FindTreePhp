@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArvoreController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Arvore;
 use Illuminate\Foundation\Application;
@@ -17,8 +18,7 @@ Route::get('/', function () {
 Route::prefix('/arvores')->middleware(['auth', 'verified'])->group(
     function () {
         Route::get('/show', function () {
-            // $users = DB::table('campaign_user', 'cuser')->join('campaigns AS c', 'c.id', '=', 'cuser.campaign_id')->where('user_id', Auth::user()->getAuthIdentifier())->get(['c.*', 'cuser.name']);
-            $arvores = Arvore::leftJoin('imagens_arvore as img', 'img.arvore_id', '=', 'arvores.id');
+            $arvores = Arvore::with('imagens')->get();
             return Inertia::render('Arvores', [
                 'arvores' => $arvores,
                 'ifArvores' => filled($arvores)
@@ -36,7 +36,7 @@ Route::prefix('/arvores')->middleware(['auth', 'verified'])->group(
         //     ]);
         // })->name('campaigns.show');
 
-        // Route::post('/store', [CampaignController::class, 'store'])->name('campaigns.store');
+        Route::post('/store', [ArvoreController::class, 'store'])->name('arvores.store');
     }
 );
 
@@ -47,3 +47,6 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+

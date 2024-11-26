@@ -43,6 +43,18 @@ const form = useForm({
     id: props.arvore.id
 });
 
+const deleteArvore = (id) => {
+      if (confirm('Tem certeza que deseja remover a árvore?')) {
+        axios.delete(`/arvores/destroy/${id}`)
+          .then(response => {
+            window.location.href = '/arvores/show';
+          })
+          .catch(error => {
+            console.error('Erro ao excluir a árvore:', error);
+          });
+      }
+    };
+
 const imageFile = ref();
 
 const uploadImage = (e) => {
@@ -555,6 +567,10 @@ const submit = () => {
                 >
                     Listar árvores
                 </Link>
+
+                <button @click="deleteArvore(arvore.id)" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                    Remover árvore
+                </button>
 
                 <PrimaryButton 
                     class="ms-4" 

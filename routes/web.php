@@ -3,7 +3,9 @@
 use App\Http\Controllers\ArvoreController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Arvore;
+use App\Models\ImagensArvore;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,6 +15,10 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+});
+
+Route::get('/getArvores', function () {
+    return Arvore::with('imagens')->get()->toArray();
 });
 
 Route::prefix('/arvores')->middleware(['auth', 'verified'])->group(
@@ -42,6 +48,12 @@ Route::prefix('/arvores')->middleware(['auth', 'verified'])->group(
 
         Route::post('/edit', [ArvoreController::class, 'update'])->name('arvores.update');
         Route::post('/store', [ArvoreController::class, 'store'])->name('arvores.store');
+        Route::delete('/destroy/{arvore}', function (Arvore $arvore) {
+            ImagensArvore::where('arvore_id', '=', $arvore->id)->delete();
+            Arvore::where('id', '=', $arvore->id)->delete();
+
+            return Redirect::route('arvores.list');
+        })->name('arvores.destroy');
     }
 );
 

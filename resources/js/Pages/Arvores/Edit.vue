@@ -220,7 +220,7 @@ const submit = () => {
                     accept="image/*"
                 />
 
-                <img v-if="form.imagens.length > 0"
+                <img v-if="form.mapa"
                     :src="form.mapa" 
                     alt="Preview" 
                     class="w-20 h-20 p-4 object-cover rounded"

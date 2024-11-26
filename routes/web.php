@@ -19,6 +19,7 @@ Route::prefix('/arvores')->middleware(['auth', 'verified'])->group(
     function () {
         Route::get('/show', function () {
             $arvores = Arvore::with('imagens')->get();
+            // dd($arvores);
             return Inertia::render('Arvores', [
                 'arvores' => $arvores,
                 'ifArvores' => filled($arvores)
@@ -29,13 +30,17 @@ Route::prefix('/arvores')->middleware(['auth', 'verified'])->group(
             return Inertia::render('Arvores/Register');
         })->name('arvores.create');
 
-        // Route::get('/{campaign_user}', function (CampaignUser $campaign_user) {
-        //     // dd($campaign_user);
-        //     return Inertia::render('Campaign/Show', [
-        //         'campaign_user' => $campaign_user
-        //     ]);
-        // })->name('campaigns.show');
+        Route::get('/{arvore}', function (Arvore $arvore) {
+            // dd($arvore->load('imagens'));
+            return Inertia::render('Arvores/Edit', [
+                'arvore' => $arvore->load('imagens')
+            ]);
+        })->name('arvores.edit');
 
+    // Route::get('/{arvore}', [ArvoreController::class, 'edit'])->name('arvores.edit');
+
+
+        Route::post('/edit', [ArvoreController::class, 'update'])->name('arvores.update');
         Route::post('/store', [ArvoreController::class, 'store'])->name('arvores.store');
     }
 );

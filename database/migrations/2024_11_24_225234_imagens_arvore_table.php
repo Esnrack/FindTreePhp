@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->text('imagem');
-            $table->string('descricao', 100);
+            $table->text('descricao');
             $table->unsignedBiginteger('arvore_id'); 
 
             $table->foreign('arvore_id')->references('id')

@@ -21,7 +21,6 @@ Route::prefix('/arvores')->middleware(['auth', 'verified'])->group(
     function () {
         Route::get('/show', function () {
             $arvores = Arvore::with('imagens')->get();
-            // dd($arvores);
             return Inertia::render('Arvores', [
                 'arvores' => $arvores,
                 'ifArvores' => filled($arvores)
